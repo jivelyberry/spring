@@ -31,6 +31,7 @@ public class BoardController {
 		log.info(req.getRequestURI());
 		log.info(req.getServletPath());
 		System.out.println("서민구");
+		System.out.println("kimjisu");
 		
 		String view = "board/index";
 		if("/user/mypage.do".equals(req.getServletPath())) { // 마이페이지로 접속한 경우 
