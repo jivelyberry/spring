@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+	version="3.1">
+
+	<servlet> <!-- 서블릿 등록 설정 -->
+		<servlet-name>dispatcher</servlet-name> <!-- 등록한 서블릿명(아래 매핑된 서블릿명이랑 같아야함) -->
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet <!-- 실제 서블릿 클래스 -->
+		</servlet-class>
+		<init-param> <!-- 초기화 파라미터 설정 (위 서블릿 안에서 파라미터명으로 받아서 파라미터값을 쓰게하기위해)-->
+			<!-- 지금 이설정은 자바 어노테이션 기반 설정방식으로 지정하겠다는것 -->
+			<param-name>contextClass</param-name> <!-- 파라미터명 -->
+			<param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value><!-- 파라미터 값 -->
+		</init-param>
+		<init-param> <!-- 초기화 파라미터 설정 -->
+			<!-- 이 설정은 DispatcherServlet에서 자바 어노테이션 설정이 들어가 있는 자바파일 경로를 파라미터로 넘겨주기 위해 -->
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+			    chap07.MvcConfig
+			</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup> <!-- 톰캣이 시작될때 실행되도록 설정 -->
+	</servlet>
+	<servlet-mapping> <!-- 서블릿 매핑 설정 -->
+		<servlet-name>dispatcher</servlet-name> <!--  요 아래 경로로 접속되면 실행되는 서블릿 -->
+		<url-pattern>/</url-pattern> <!-- 경로설정 (/는 모든 경로) -->
+	</servlet-mapping>
+	
+	<!-- 아래 필터설정은 실제 컨트롤러에 접속되기전 한글(utf-8)설정을 위해 스프링의 인코딩필터 적용 -->
+	<filter>
+	  	<filter-name>encodingFilter</filter-name>
+	  	<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+	  	<init-param>
+	  		<param-name>encoding</param-name>
+	  		<param-value>UTF-8</param-value>
+	  	</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+	  	<url-pattern>/*</url-pattern>
+	</filter-mapping>	
+</web-app>
